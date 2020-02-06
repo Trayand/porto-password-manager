@@ -1,0 +1,7 @@
+export const ADD_PASSWORD = 'ADD_PASSWORD'
+export const DELETE_PASSWORD = 'DELETE_PASSWORD'
+export const READ_PASSWORD = 'READ_PASSWORD'
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
+export const FETCH_START = 'FETCH_START'
