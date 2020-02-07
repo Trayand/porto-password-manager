@@ -8,6 +8,8 @@ import {
 // import { Provider } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 
+import Auth from '../components/Auth';
+
 
 
 export default function MainPage(props) {
@@ -18,15 +20,18 @@ export default function MainPage(props) {
         <Switch>
             <Route exact path="/">
                 <div className="App-header">
-                    <Button onClick={() => history.push('/hello')}>
+                    <Auth>
+                    </Auth>
+                    {/* <Button onClick={() => history.push('/hello')}>
                         Login Disini
-                        </Button>
+                        </Button> */}
                 </div>
             </Route>
+            {/* add private router here soon */}
             <Route path="/hello">
-                <div className="App-header">
+                <div className="">
                     <Button onClick={() => history.push('/')}>
-                        Password Disini
+                        Password Maintenance Disini
                         </Button>
                 </div>
             </Route>
