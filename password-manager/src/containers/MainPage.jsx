@@ -8,11 +8,10 @@ import {
 } from 'react-router-dom'
 
 import { useDispatch } from 'react-redux'
-import { Logout, Login } from '../store/actions/UserAction';
+import { Login } from '../store/actions/UserAction';
 
 // import { Provider } from 'react-redux'
-import Button from 'react-bootstrap/Button';
-
+import HomePage from './HomePage'
 import Auth from '../components/Auth';
 
 
@@ -49,20 +48,7 @@ export default function MainPage(props) {
             </Route>
             {/* add private router here soon */}
             <Route path="/hello">
-                <div className="">
-                    <Button onClick={() => {
-                        firebase.auth().signOut().then(function () {
-                            history.push('/')
-                            dispatch(Logout())
-                            // Sign-out successful.
-                        }).catch(function (error) {
-                            // An error happened.
-                            console.log(error);
-                        });
-                    }}>
-                        Password Maintenance Disini
-                        </Button>
-                </div>
+                <HomePage />
             </Route>
         </Switch>
     </>
