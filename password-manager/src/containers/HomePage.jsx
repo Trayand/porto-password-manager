@@ -36,6 +36,7 @@ export default function HomePage(props) {
             {/* tombol logout */}
             <div className="d-flex w-100 flex-row">
                 <div className="w-50" >
+                    <h3 className="mt-5" >Save Your Password</h3>
                     <FormPassword />
                 </div>
                 <div className="w-50" >

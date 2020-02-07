@@ -12,9 +12,9 @@ export default function NavBar(props) {
 
 
     return (
-        <div 
+        <div
             className="d-flex justify-content-between w-100 px-5 py-2 bg-dark text-light"
-            style={{height: 60}} >
+            style={{ height: 60 }} >
             <h3>Passu-Wordo</h3>
             <div className="">
                 <Button onClick={() => {

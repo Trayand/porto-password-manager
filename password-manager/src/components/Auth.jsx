@@ -6,7 +6,7 @@ import Form from './LoginRegisterForm';
 import '../style/index.css'
 import selectingImage from '../assets/select.svg'
 import ideaImage from '../assets/idea.svg'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 export default function LoginPage(porps) {
     const [imageState, setImageState] = useState(ideaImage)
@@ -27,11 +27,11 @@ export default function LoginPage(porps) {
 
     const user = useSelector(state => state.user)
 
-    useEffect(() =>{
+    useEffect(() => {
         console.log(user, 'ini user dari auth.jsx');
-        if(user) history.replace('/hello')
-    },[user, history])
-    
+        if (user) history.replace('/hello')
+    }, [user, history])
+
 
     return (
         <div className="login-holder">

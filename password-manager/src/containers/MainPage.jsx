@@ -13,6 +13,7 @@ import { Login } from '../store/actions/UserAction';
 // import { Provider } from 'react-redux'
 import HomePage from './HomePage'
 import Auth from '../components/Auth';
+import PrivateRoute from '../config/PrivateRoute';
 
 
 
@@ -47,9 +48,9 @@ export default function MainPage(props) {
                 </div>
             </Route>
             {/* add private router here soon */}
-            <Route path="/hello">
+            <PrivateRoute path="/hello">
                 <HomePage />
-            </Route>
+            </PrivateRoute>
         </Switch>
     </>
 }
