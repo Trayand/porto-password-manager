@@ -1,10 +1,20 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { thunk } from './middlewares'
-// import pokemonReducer from "./reducers/pokemonReducer";
+import UserReducer from './reducers/UserReducer'
+import PasswordReducer from './reducers/PasswordReducer'
+
 
 const rootReducter = combineReducers({
-    // pokemon: pokemonReducer
+    user: UserReducer,
+    passwords: PasswordReducer
 })
-const store = createStore(rootReducter, applyMiddleware(thunk))
+const store = createStore(
+    rootReducter,
+    composeWithDevTools(
+        applyMiddleware(thunk),
+        // other store enhancers if any
+    )
+)
 
 export default store

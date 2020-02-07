@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import {firebase} from '../config/firebase'
+import { firebase } from '../config/firebase'
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { Login } from '../store/actions/UserAction';
 
 import { Form, Button } from 'react-bootstrap';
 import '../style/index.css'
 
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 
 export default function FormForLogin(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const history = useHistory()
+    const dispatch = useDispatch()
 
     const emailChangeHandler = e => {
         setEmail(e.target.value)
@@ -19,29 +28,44 @@ export default function FormForLogin(props) {
 
     const handleForm = async (e) => {
         e.preventDefault()
-        console.log(props.intent)
         try {
             let userData;
             if (props.intent === 'login') {
                 userData = await firebase
                     .auth()
                     .signInWithEmailAndPassword(email, password)
-                    console.log(userData, 'ini data');
-                } else if (props.intent === "register") {
-                    userData = await firebase
+            } else if (props.intent === "register") {
+                userData = await firebase
                     .auth()
                     .createUserWithEmailAndPassword(email, password)
-                    console.log(userData, 'ini register');
             }
-            console.log('=================');
-            console.log(userData, 'ini user');
-            console.log('=================');
-            
-            
+
+            console.log(userData, 'ini userData');
+
+            dispatch(Login({
+                id: userData.user.uid
+            }))
+
+            history.push('/hello')
+
+
         } catch (error) {
-            console.log('=================');
             console.log(error, 'ini error')
-            console.log('=================');
+            
+            MySwal.fire({
+                title: 'error',
+                footer: 'Copyright 2018',
+                onOpen: () => {
+                    MySwal.clickConfirm()
+                }
+            }).then(() => {
+                return MySwal.fire({
+                    icon: 'error',
+                    title: error.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            })
         }
     }
 
