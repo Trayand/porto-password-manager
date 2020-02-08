@@ -6,10 +6,8 @@ import { Login } from '../store/actions/UserAction';
 
 import { Form, Button } from 'react-bootstrap';
 import '../style/index.css'
+import Swala from '../config/Swal';
 
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-const MySwal = withReactContent(Swal)
 
 export default function FormForLogin(props) {
     const [email, setEmail] = useState('')
@@ -51,21 +49,7 @@ export default function FormForLogin(props) {
 
         } catch (error) {
             console.log(error, 'ini error')
-            
-            MySwal.fire({
-                title: 'error',
-                footer: 'Copyright 2018',
-                onOpen: () => {
-                    MySwal.clickConfirm()
-                }
-            }).then(() => {
-                return MySwal.fire({
-                    icon: 'error',
-                    title: error.message,
-                    showConfirmButton: false,
-                    timer: 2000
-                })
-            })
+            Swala('error', error.message, 'error')
         }
     }
 
