@@ -28,8 +28,8 @@ export default function FormPassword(props) {
                 urlLink: props.urlLink,
                 username: props.username,
                 password: props.password,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: {nanoseconds: new Date().getTime(), seconds: new Date().getTime()/1000},
+                updatedAt: {nanoseconds: new Date().getTime(), seconds: new Date().getTime()/1000},
                 userId: user.id
             }
 
