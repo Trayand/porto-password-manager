@@ -23,8 +23,8 @@ export default function HomePageList(props) {
                         ...doc.data()
                     })
                 })
-                console.log(todos)
-                console.log(new Date().toLocaleDateString());
+                // console.log(todos)
+                // console.log(new Date().toLocaleDateString());
                 // setPasswordsData(todos)
                 setPasswordsData(todos)
             })
@@ -39,8 +39,14 @@ export default function HomePageList(props) {
     const columns = [{
         dataField: 'urlLink',
         text: 'URL',
-        sort: true
-    }, {
+        sort: true,
+    // },{
+    //     dataField: 'image',
+    //     text: 'image',
+    //     render: function (value, row, index) {
+    //         return imageAndText(value)
+    //     }
+    },{
         dataField: 'username',
         text: 'Username',
         sort: true
@@ -77,12 +83,37 @@ export default function HomePageList(props) {
         }
     }
 
+    // const imageAndText = ( param ) => {
+    //     if(param){
+    //         return (
+    //             <>
+    //             <img src={param} alt=""/>
+    //             </>
+    //         )
+    //     }
+    // }
+
+    const onHandleDelete = (e) => {
+        e.preventDefault()
+        if(selectedRow.length === 0) return
+        var conf = window.confirm('are you sure to delete this??')
+        if(!conf) return
+        let promises = []
+        selectedRow.forEach(element => {
+            console.log(element, 'dari element for each');
+            promises.push(db.collection('passwords').doc(element).delete())
+        });
+        Swala('success', 'deleted', 'success')
+        
+    }
+
     const selectRow = {
         mode: 'checkbox',
         clickToSelect: true,
+        clickToEdit: true,
         onSelect: (row, isSelect, rowIndex, e) => {
-            console.log(row.id);
-            console.log(isSelect);
+            // console.log(row.id);
+            // console.log(isSelect);
             let newArr = selectedRow
             if (isSelect) {
                 newArr.push(row.id)
@@ -90,17 +121,18 @@ export default function HomePageList(props) {
                 newArr = newArr.filter(value => value !== row.id)
             }
             setSelectedRow(newArr)
+            console.log(selectedRow);
         },
         onSelectAll: (isSelect, rows, e) => {
-            console.log(isSelect);
-            console.log(rows);
+            // console.log(isSelect);
+            // console.log(rows);
             let newArr = []
-            if (isSelect) newArr = rows
+            if (isSelect) rows.forEach(el => newArr.push(el.id))
             else newArr = []
             setSelectedRow(newArr)
+            console.log(selectedRow);
         }
     };
-
     return (
         <ToolkitProvider
             bootstrap4
@@ -116,14 +148,15 @@ export default function HomePageList(props) {
                         <div className="d-flex ml-4 align-items-center" >
                             <h5 className="mr-2" >Search: </h5>
                             <SearchBar {...props.searchProps} />
-                            <Button className={selectedRow.length ? "disable btn ml-auto mr-4" : "btn ml-auto mr-4"} variant="outline-danger" >Delete selected</Button>
+                            <Button className="btn ml-auto mr-4" variant="outline-danger" onClick={onHandleDelete} >Delete selected</Button>
                         </div>
+                        <small>click for select, double click for edit(`enter` for submit)</small>
                         <hr />
                         <BootstrapTable
                             {...props.baseProps}
                             selectRow={selectRow}
                             cellEdit={cellEditFactory({
-                                mode: 'click',
+                                mode: 'dbclick',
                                 onStartEdit: (row, column, rowIndex, columnIndex) => {
                                     console.log('start to edit!!!', row, column.dataField)
                                 },

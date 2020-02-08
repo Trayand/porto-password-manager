@@ -30,7 +30,8 @@ export default function FormPassword(props) {
                 password: props.password,
                 createdAt: {nanoseconds: new Date().getTime(), seconds: new Date().getTime()/1000},
                 updatedAt: {nanoseconds: new Date().getTime(), seconds: new Date().getTime()/1000},
-                userId: user.id
+                userId: user.id,
+                image: 'https://logo.clearbit.com/' + props.urlLink
             }
 
             db.collection("passwords")
