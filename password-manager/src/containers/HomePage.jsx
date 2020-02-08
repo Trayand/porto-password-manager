@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar'
 import FormPassword from '../components/FormPassword'
+import HomePageList from '../components/HomePageList'
 
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
@@ -51,9 +52,9 @@ export default function HomePage(props) {
                 <div className="w-50" >
                     <h3 className="mt-5" >Save Your Password</h3>
                     <FormPassword
-                        urlLink={urlLink} urlLinkChangeHandler={urlLinkChangeHandler}
-                        username={username} usernameChangeHandler={usernameChangeHandler}
-                        password={password} passwordChangeHandler={passwordChangeHandler}
+                        urlLink={urlLink} urlLinkChangeHandler={urlLinkChangeHandler} setUrlLink={setUrlLink}
+                        username={username} usernameChangeHandler={usernameChangeHandler} setUsername={setUsername}
+                        password={password} passwordChangeHandler={passwordChangeHandler} setPassword={setPassword}
                     />
                 </div>
                 <div className="w-50" >
@@ -92,47 +93,15 @@ export default function HomePage(props) {
                     </div>
                     <br />
                     <div className="d-flex align-items-baseline" >
-                        <ProgressBar
-                            animated
-                            className="w-75"
-                            now={totalStrength}
-                            variant={
-                                totalStrength < 30
-                                    ? 'danger'
-                                    : totalStrength < 50
-                                        ? 'warning'
-                                        : totalStrength < 65
-                                            ? 'info'
-                                            : 'success'
-                            } />
-                        <p className="ml-3" style={
-                            totalStrength < 20
-                                ? { color: 'white' }
-                                : totalStrength < 30
-                                    ? { color: 'red' }
-                                    : totalStrength < 50
-                                        ? { color: 'orange' }
-                                        : totalStrength < 65
-                                            ? {color: '#3489eb'}
-                                            : {color: 'green'}
-                        } >
-                            {
-                                totalStrength < 20
-                                    ? ''
-                                    : totalStrength < 30
-                                        ? 'very weak'
-                                        : totalStrength < 50
-                                            ? 'weak'
-                                            : totalStrength < 65
-                                                ? 'medium'
-                                                : totalStrength < 85
-                                                    ? 'strong'
-                                                    : 'really strong'
-                            }
+                        <ProgressBar animated className="w-75" now={totalStrength}
+                            variant={totalStrength < 30 ? 'danger' : totalStrength < 50 ? 'warning' : totalStrength < 65 ? 'info' : 'success'} />
+                        <p className="ml-3" style={totalStrength < 20 ? { color: 'white' } : totalStrength < 30 ? { color: 'red' } : totalStrength < 50 ? { color: 'orange' } : totalStrength < 65 ? { color: '#3489eb' } : { color: 'green' }} >
+                            {totalStrength < 20 ? '' : totalStrength < 30 ? 'very weak' : totalStrength < 50 ? 'weak' : totalStrength < 65 ? 'medium' : totalStrength < 85 ? 'strong' : 'really strong'}
                         </p>
                     </div>
                 </div>
             </div>
+            <HomePageList className="w-100" />
         </>
     )
 

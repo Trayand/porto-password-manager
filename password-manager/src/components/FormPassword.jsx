@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 
+import { db } from '../config/firebase'
 import { Form, Button, InputGroup } from 'react-bootstrap';
+import Swala from '../config/Swal';
+import { useSelector } from 'react-redux'
 
 export default function FormPassword(props) {
+    const user = useSelector(state => state.user)
 
     const [inputType, setInputType] = useState('password')
     const [eyeLogo, setEyeLogo] = useState('fa fa-eye-slash')
@@ -15,8 +19,33 @@ export default function FormPassword(props) {
             event.preventDefault()
             event.stopPropagation();
             setValidated(true);
-        }else{
+        } else {
             console.log('masuk');
+            console.log(props.urlLink);
+            console.log(props.username);
+            console.log(props.password);
+            let formSender = {
+                urlLink: props.urlLink,
+                username: props.username,
+                password: props.password,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                userId: user.id
+            }
+
+            db.collection("passwords")
+                .add(formSender)
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                    Swala('success', 'success', 'success')
+                    props.setUrlLink('')
+                    props.setUsername('')
+                    props.setPassword('')
+                })
+                .catch(function (error) {
+                    console.error("Error adding document: ", error);
+                    Swala('error', error.message, 'error')
+                });
         }
     };
 
