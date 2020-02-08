@@ -15,6 +15,8 @@ export default function FormPassword(props) {
             event.preventDefault()
             event.stopPropagation();
             setValidated(true);
+        }else{
+            console.log('masuk');
         }
     };
 
