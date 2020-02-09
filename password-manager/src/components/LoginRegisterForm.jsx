@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { Login } from '../store/actions/UserAction';
 
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import '../style/index.css'
 import Swala from '../config/Swal';
 
@@ -12,6 +12,8 @@ import Swala from '../config/Swal';
 export default function FormForLogin(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [eyeLogo, setEyeLogo] = useState('fa fa-eye-slash')
+    const [inputType, setInputType] = useState('password')
 
     const history = useHistory()
     const dispatch = useDispatch()
@@ -53,12 +55,24 @@ export default function FormForLogin(props) {
         }
     }
 
+    const handleShowPassword = () => {
+        // console.log('test');
+        if (inputType === 'password') {
+            setInputType('text')
+            setEyeLogo('fa fa-eye')
+        } else {
+            setInputType('password')
+            setEyeLogo('fa fa-eye-slash')
+        }
+    }
+
+
 
     return (
         <Form style={{ width: '35vw', marginTop: -60 }} onSubmit={handleForm} >
             <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" onChange={emailChangeHandler} value={email} />
+                <Form.Control data-testid="test-input-email" type="email" placeholder="Enter email" onChange={emailChangeHandler} value={email} />
                 {
                     props.intent === 'login'
                         ? <Form.Text className="text-muted" style={{ width: '100%' }} >Welcome Back</Form.Text>
@@ -68,7 +82,14 @@ export default function FormForLogin(props) {
 
             <Form.Group controlId="formBasicPassword" style={{ marginBottom: 60 }} >
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" onChange={passwordChangeHandler} value={password} />
+                <InputGroup>
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id="inputGroupPrepend" onClick={handleShowPassword} >
+                            <i className={eyeLogo} style={{ fontSize: 24 }}></i>
+                        </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control type={inputType} placeholder="Password" onChange={passwordChangeHandler} value={password} />
+                </InputGroup>
             </Form.Group>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {
@@ -78,7 +99,7 @@ export default function FormForLogin(props) {
                 }
                 {
                     props.intent === 'login'
-                        ? <Button variant="success" type="submit" name="submit" value="login" style={{ width: 100 }} >Login</Button>
+                        ? <Button data-testid="login-button-on-login-form" variant="success" type="submit" name="submit" value="login" style={{ width: 100 }} >Login</Button>
                         : <span style={{ width: 100 }} ></span>
                 }
             </div>

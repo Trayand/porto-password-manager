@@ -12,6 +12,12 @@ export default function HomePageList(props) {
     const user = useSelector(state => state.user)
     const [passwordsData, setPasswordsData] = useState([])
     const [selectedRow, setSelectedRow] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [dot, setDot] = useState('.')
+
+    // useEffect(() => {
+    //     console.log(isLoading);
+    // }, [passwordsData])
 
     useEffect(() => {
         const unsubscribe = db.collection('passwords').where('userId', '==', user.id)
@@ -27,6 +33,7 @@ export default function HomePageList(props) {
                 // console.log(new Date().toLocaleDateString());
                 // setPasswordsData(todos)
                 setPasswordsData(todos)
+                setIsLoading(false)
             })
 
         return () => {
@@ -40,13 +47,13 @@ export default function HomePageList(props) {
         dataField: 'urlLink',
         text: 'URL',
         sort: true,
-    // },{
-    //     dataField: 'image',
-    //     text: 'image',
-    //     render: function (value, row, index) {
-    //         return imageAndText(value)
-    //     }
-    },{
+        // },{
+        //     dataField: 'image',
+        //     text: 'image',
+        //     render: function (value, row, index) {
+        //         return imageAndText(value)
+        //     }
+    }, {
         dataField: 'username',
         text: 'Username',
         sort: true
@@ -95,16 +102,16 @@ export default function HomePageList(props) {
 
     const onHandleDelete = (e) => {
         e.preventDefault()
-        if(selectedRow.length === 0) return
+        if (selectedRow.length === 0) return
         var conf = window.confirm('are you sure to delete this??')
-        if(!conf) return
+        if (!conf) return
         let promises = []
         selectedRow.forEach(element => {
             console.log(element, 'dari element for each');
             promises.push(db.collection('passwords').doc(element).delete())
         });
         Swala('success', 'deleted', 'success')
-        
+
     }
 
     const selectRow = {
@@ -133,59 +140,74 @@ export default function HomePageList(props) {
             console.log(selectedRow);
         }
     };
+
+    if (isLoading) {
+        setInterval(() => {
+            if (dot === '.') setDot('..')
+            if (dot === '..') setDot('...')
+            if (dot === '...') setDot('.')
+        }, 250);
+    }
+
     return (
-        <ToolkitProvider
-            bootstrap4
-            keyField="id"
-            data={passwordsData}
-            columns={columns}
-            search
-            defaultSorted={defaultSorted}
-        >
+        <>
             {
-                props => (
-                    <div>
-                        <div className="d-flex ml-4 align-items-center" >
-                            <h5 className="mr-2" >Search: </h5>
-                            <SearchBar {...props.searchProps} />
-                            <Button className="btn ml-auto mr-4" variant="outline-danger" onClick={onHandleDelete} >Delete selected</Button>
-                        </div>
-                        <small>click for select, double click for edit(`enter` for submit)</small>
-                        <hr />
-                        <BootstrapTable
-                            {...props.baseProps}
-                            selectRow={selectRow}
-                            cellEdit={cellEditFactory({
-                                mode: 'dbclick',
-                                onStartEdit: (row, column, rowIndex, columnIndex) => {
-                                    console.log('start to edit!!!', row, column.dataField)
-                                },
-                                beforeSaveCell: (oldValue, newValue, row, column) => {
-                                    console.log('Before Saving Cell!!', newValue, row);
-                                },
-                                afterSaveCell: (oldValue, newValue, row, column) => {
-                                    console.log('After Saving Cell!!');
-                                    db.collection("passwords")
-                                        .doc(row.id)
-                                        .set({
-                                            ...row,
-                                            [column.dataField]: newValue,
-                                            updatedAt: { nanoseconds: new Date().getTime(), seconds: new Date().getTime() / 1000 }
-                                        })
-                                        .then(function () {
-                                            console.log("Document updated");
-                                            Swala('success', 'success update', 'success')
-                                        })
-                                        .catch(function (error) {
-                                            // console.error("Error adding document: ", error);
-                                            Swala('error', error.message, 'error')
-                                        });
-                                }
-                            })}
-                        />
-                    </div>
-                )
+                isLoading
+                    ? < span > Data loading{dot}</span>
+                    : <ToolkitProvider
+                        bootstrap4
+                        keyField="id"
+                        data={passwordsData}
+                        columns={columns}
+                        search
+                        defaultSorted={defaultSorted}
+                    >
+                        {
+                            props => (
+                                <div>
+                                    <div className="d-flex ml-4 align-items-center" >
+                                        <h5 className="mr-2" >Search: </h5>
+                                        <SearchBar {...props.searchProps} />
+                                        <Button className="btn ml-auto mr-4" variant="outline-danger" onClick={onHandleDelete} >Delete selected</Button>
+                                    </div>
+                                    <small>click for select, double click for edit(`enter` for submit)</small>
+                                    <hr />
+                                    <BootstrapTable
+                                        {...props.baseProps}
+                                        selectRow={selectRow}
+                                        cellEdit={cellEditFactory({
+                                            mode: 'dbclick',
+                                            onStartEdit: (row, column, rowIndex, columnIndex) => {
+                                                console.log('start to edit!!!', row, column.dataField)
+                                            },
+                                            beforeSaveCell: (oldValue, newValue, row, column) => {
+                                                console.log('Before Saving Cell!!', newValue, row);
+                                            },
+                                            afterSaveCell: (oldValue, newValue, row, column) => {
+                                                console.log('After Saving Cell!!');
+                                                db.collection("passwords")
+                                                    .doc(row.id)
+                                                    .set({
+                                                        ...row,
+                                                        [column.dataField]: newValue,
+                                                        updatedAt: { nanoseconds: new Date().getTime(), seconds: new Date().getTime() / 1000 }
+                                                    })
+                                                    .then(function () {
+                                                        console.log("Document updated");
+                                                        Swala('success', 'success update', 'success')
+                                                    })
+                                                    .catch(function (error) {
+                                                        // console.error("Error adding document: ", error);
+                                                        Swala('error', error.message, 'error')
+                                                    });
+                                            }
+                                        })}
+                                    />
+                                </div>
+                            )
+                        }
+                    </ToolkitProvider>
             }
-        </ToolkitProvider>
+        </>
     )
 }

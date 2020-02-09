@@ -12,7 +12,7 @@ import { Login } from '../store/actions/UserAction';
 
 // import { Provider } from 'react-redux'
 import HomePage from './HomePage'
-import Auth from '../components/Auth';
+import Auth from './Auth';
 import PrivateRoute from '../config/PrivateRoute';
 
 

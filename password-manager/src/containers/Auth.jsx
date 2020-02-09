@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
 import { useHistory } from 'react-router-dom';
-import Form from './LoginRegisterForm';
+import Form from '../components/LoginRegisterForm';
 import '../style/index.css'
 import selectingImage from '../assets/select.svg'
 import ideaImage from '../assets/idea.svg'
@@ -36,14 +36,14 @@ export default function LoginPage(porps) {
     return (
         <div className="login-holder">
             <div style={{ width: '50vw' }} >
-                <img src={imageState} style={{ width: '50%', height: '450px', marginTop: -170, marginBottom: 90 }} alt="" />
+                <img src={imageState} style={{ width: '50%', height: '450px', marginTop: '-18%', marginBottom: '-10%' }} alt="" />
                 <h5>Just remember your master password and 'I' remembers the rest.<br />See for yourself how easy password management can be.</h5>
             </div>
             <div style={{ marginTop: -60 }} >
                 <h3 style={{ textDecoration: 'underline' }} >{formSet}</h3>
                 <br /><br />
                 <Form style={{ width: '50vw' }} intent={intent} setImage={changeImage} />
-                <Button className="btn-focus" variant="outline-warning" type="button" style={{ width: 212, marginTop: -80 }} onClick={() => {
+                <Button data-testid="change-value-button" className="btn-focus" variant="outline-warning" type="button" style={{ width: 212, marginTop: -80 }} onClick={() => {
                     setIntent(intent => {
                         if (intent === 'login') return 'register'
                         else return 'login'

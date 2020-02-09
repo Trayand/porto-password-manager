@@ -21,15 +21,12 @@ export default function FormPassword(props) {
             setValidated(true);
         } else {
             console.log('masuk');
-            console.log(props.urlLink);
-            console.log(props.username);
-            console.log(props.password);
             let formSender = {
                 urlLink: props.urlLink,
                 username: props.username,
                 password: props.password,
-                createdAt: {nanoseconds: new Date().getTime(), seconds: new Date().getTime()/1000},
-                updatedAt: {nanoseconds: new Date().getTime(), seconds: new Date().getTime()/1000},
+                createdAt: { nanoseconds: new Date().getTime(), seconds: new Date().getTime() / 1000 },
+                updatedAt: { nanoseconds: new Date().getTime(), seconds: new Date().getTime() / 1000 },
                 userId: user.id,
                 image: 'https://logo.clearbit.com/' + props.urlLink
             }
@@ -74,7 +71,8 @@ export default function FormPassword(props) {
                                 type="text"
                                 placeholder="Enter url"
                                 pattern="[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
-                                onChange={props.urlLinkChangeHandler} />
+                                onChange={props.urlLinkChangeHandler}
+                                value={props.urlLink} />
                             <Form.Control.Feedback type="invalid">
                                 Please choose a url.
                              </Form.Control.Feedback>
@@ -87,7 +85,8 @@ export default function FormPassword(props) {
                                 required
                                 type="text"
                                 placeholder="Username"
-                                onChange={props.usernameChangeHandler} />
+                                onChange={props.usernameChangeHandler}
+                                value={props.username} />
                             <Form.Control.Feedback type="invalid">
                                 Please choose a username.
                              </Form.Control.Feedback>
@@ -107,6 +106,7 @@ export default function FormPassword(props) {
                                 aria-describedby="inputGroupPrepend"
                                 onChange={props.passwordChangeHandler}
                                 required
+                                value={props.password}
                             />
                             <Form.Control.Feedback type="invalid">
                                 Please choose a password.

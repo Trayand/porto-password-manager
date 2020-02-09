@@ -4,6 +4,7 @@ import FormPassword from '../components/FormPassword'
 import HomePageList from '../components/HomePageList'
 
 import ProgressBar from 'react-bootstrap/ProgressBar'
+import Strengt from '../components/Strength'
 
 export default function HomePage(props) {
     const [password, setPassword] = useState('')
@@ -57,43 +58,12 @@ export default function HomePage(props) {
                         password={password} passwordChangeHandler={passwordChangeHandler} setPassword={setPassword}
                     />
                 </div>
-                <div className="w-50" >
+                <div className="w-50 px-4" >
                     <h3 className="my-5 pr-5" >Test Your Password Might</h3>
-                    <div className="d-flex flex-column align-items-start" >
-                        <span> [ {
-                            password.match(/.*[A-Z].*/)
-                                ? <span className="fa fa-check" style={{ color: 'green' }} ></span>
-                                : <span className="fa fa-remove red" style={{ color: 'red' }} ></span>
-                        } ]
-                                Password setidaknya harus memiliki satu karakter huruf besar. ( upper-case ) </span>
-                        <span> [ {
-                            password.match(/.*[a-z].*/)
-                                ? <span className="fa fa-check" style={{ color: 'green' }} ></span>
-                                : <span className="fa fa-remove red" style={{ color: 'red' }} ></span>
-                        } ]
-                                Password setidaknya harus memiliki satu karakter huruf kecil. ( lower-case ) </span>
-                        <span> [ {
-                            password.match(/.*[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E].*/)
-                                ? <span className="fa fa-check" style={{ color: 'green' }} ></span>
-                                : <span className="fa fa-remove red" style={{ color: 'red' }} ></span>
-                        } ]
-                                Password setidaknya harus memiliki satu karakter huruf special. ( #$@!&%... ) </span>
-                        <span> [ {
-                            password.match(/.*\d.*/)
-                                ? <span className="fa fa-check" style={{ color: 'green' }} ></span>
-                                : <span className="fa fa-remove red" style={{ color: 'red' }} ></span>
-                        } ]
-                                Password setidaknya harus memiliki satu angka.</span>
-                        <span> [ {
-                            password.length > 5
-                                ? <span className="fa fa-check" style={{ color: 'green' }} ></span>
-                                : <span className="fa fa-remove red" style={{ color: 'red' }} ></span>
-                        } ]
-                                Password setidaknya harus memiliki  panjang (length) lebih dari 5 karakter.</span>
-                    </div>
+                    <Strengt password={password} />
                     <br />
                     <div className="d-flex align-items-baseline" >
-                        <ProgressBar animated className="w-75" now={totalStrength}
+                        <ProgressBar animated className="w-100" now={totalStrength}
                             variant={totalStrength < 30 ? 'danger' : totalStrength < 50 ? 'warning' : totalStrength < 65 ? 'info' : 'success'} />
                         <p className="ml-3" style={totalStrength < 20 ? { color: 'white' } : totalStrength < 30 ? { color: 'red' } : totalStrength < 50 ? { color: 'orange' } : totalStrength < 65 ? { color: '#3489eb' } : { color: 'green' }} >
                             {totalStrength < 20 ? '' : totalStrength < 30 ? 'very weak' : totalStrength < 50 ? 'weak' : totalStrength < 65 ? 'medium' : totalStrength < 85 ? 'strong' : 'really strong'}
@@ -101,7 +71,7 @@ export default function HomePage(props) {
                     </div>
                 </div>
             </div>
-            <HomePageList className="w-100" />
+            <HomePageList className="w-100" style={{ minHeight: 200 }} />
         </>
     )
 
