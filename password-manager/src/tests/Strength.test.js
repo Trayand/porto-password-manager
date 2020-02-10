@@ -14,9 +14,9 @@ test('testing logout button', () => {
         { user: { id: "AVhIrvyoEIbcggSoUATlLRJQTcq1" } },
     )
 
-    const password = 80
+    const password = 'Se$34a'
 
-    const { getByTestId, getByText } = render(
+    const { getByText } = render(
         <Provider store={store}>
             <Router>
                 <Strength password={password} />
@@ -24,8 +24,7 @@ test('testing logout button', () => {
         </Provider>
     )
 
-    const text2 = getByText(/Logout/i)
-    expect(getByTestId('logout-button')).toHaveValue('Logout')
+    const text2 = getByText(/Password setidaknya harus memiliki satu karakter huruf special./i)
     // expect(logoutFunction).toHaveBeenCalled() 
     // *cant use this one
     expect(text2).toBeInTheDocument()
