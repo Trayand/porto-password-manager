@@ -10,6 +10,19 @@ export default function NavBar(props) {
     const history = useHistory()
     const dispatch = useDispatch()
 
+    const logoutFunction = () => {
+
+        firebase.auth().signOut().then(function () {
+            history.push('/')
+            dispatch(Logout())
+            console.log('logout');
+            // Sign-out successful.
+        }).catch(function (error) {
+            // An error happened.
+            console.log(error);
+        });
+
+    }
 
     return (
         <div
@@ -17,17 +30,7 @@ export default function NavBar(props) {
             style={{ height: 60 }} >
             <h3>Passu-Wordo</h3>
             <div className="">
-                <Button onClick={() => {
-                    firebase.auth().signOut().then(function () {
-                        history.push('/')
-                        dispatch(Logout())
-                        console.log('logout');
-                        // Sign-out successful.
-                    }).catch(function (error) {
-                        // An error happened.
-                        console.log(error);
-                    });
-                }} variant="outline-light">
+                <Button data-testid="logout-button" value="Logout" onClick={logoutFunction} variant="outline-light">
                     Logout
                         </Button>
             </div>

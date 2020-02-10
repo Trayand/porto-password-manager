@@ -14,6 +14,7 @@ export default function HomePageList(props) {
     const [selectedRow, setSelectedRow] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [dot, setDot] = useState('.')
+    const { SearchBar } = Search;
 
     // useEffect(() => {
     //     console.log(isLoading);
@@ -22,17 +23,14 @@ export default function HomePageList(props) {
     useEffect(() => {
         const unsubscribe = db.collection('passwords').where('userId', '==', user.id)
             .onSnapshot(querySnapshot => {
-                let todos = []
+                let passwordSaved = []
                 querySnapshot.forEach(doc => {
-                    todos.push({
+                    passwordSaved.push({
                         id: doc.id,
                         ...doc.data()
                     })
                 })
-                // console.log(todos)
-                // console.log(new Date().toLocaleDateString());
-                // setPasswordsData(todos)
-                setPasswordsData(todos)
+                setPasswordsData(passwordSaved)
                 setIsLoading(false)
             })
 
@@ -40,8 +38,6 @@ export default function HomePageList(props) {
             unsubscribe()
         }
     }, [user])
-
-    const { SearchBar } = Search;
 
     const columns = [{
         dataField: 'urlLink',
@@ -146,8 +142,12 @@ export default function HomePageList(props) {
             if (dot === '.') setDot('..')
             if (dot === '..') setDot('...')
             if (dot === '...') setDot('.')
-        }, 250);
+        }, 500);
     }
+
+    // const searchThis = (e) => {
+    //     ToolkitProvider.search(e.target.value).draw();
+    // }
 
     return (
         <>
@@ -173,6 +173,7 @@ export default function HomePageList(props) {
                                     <small>click for select, double click for edit(`enter` for submit)</small>
                                     <hr />
                                     <BootstrapTable
+                                        search
                                         {...props.baseProps}
                                         selectRow={selectRow}
                                         cellEdit={cellEditFactory({
