@@ -15,11 +15,11 @@ export default function NavBar(props) {
         firebase.auth().signOut().then(function () {
             history.push('/')
             dispatch(Logout())
-            console.log('logout');
+            // console.log('logout');
             // Sign-out successful.
         }).catch(function (error) {
             // An error happened.
-            console.log(error);
+            // console.log(error);
         });
 
     }

@@ -1,43 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import cellEditFactory from 'react-bootstrap-table2-editor';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import { useSelector } from 'react-redux'
 import Swala from '../config/Swal';
-import { db } from '../config/firebase'
+import { db, useCollection } from '../config/firebase'
 import { Button } from 'react-bootstrap';
 
 export default function HomePageList(props) {
     const user = useSelector(state => state.user)
-    const [passwordsData, setPasswordsData] = useState([])
     const [selectedRow, setSelectedRow] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
     const [dot, setDot] = useState('.')
     const { SearchBar } = Search;
 
-    // useEffect(() => {
-    //     console.log(isLoading);
-    // }, [passwordsData])
-
-    useEffect(() => {
-        const unsubscribe = db.collection('passwords').where('userId', '==', user.id)
-            .onSnapshot(querySnapshot => {
-                let passwordSaved = []
-                querySnapshot.forEach(doc => {
-                    passwordSaved.push({
-                        id: doc.id,
-                        ...doc.data()
-                    })
-                })
-                setPasswordsData(passwordSaved)
-                setIsLoading(false)
-            })
-
-        return () => {
-            unsubscribe()
-        }
-    }, [user])
+    const passwords = useCollection('passwords', [['userId', '==', user.id]])
+    const passwordsData = passwords.data
 
     const columns = [{
         dataField: 'urlLink',
@@ -103,7 +81,7 @@ export default function HomePageList(props) {
         if (!conf) return
         let promises = []
         selectedRow.forEach(element => {
-            console.log(element, 'dari element for each');
+            // console.log(element, 'dari element for each');
             promises.push(db.collection('passwords').doc(element).delete())
         });
         Swala('success', 'deleted', 'success')
@@ -115,8 +93,6 @@ export default function HomePageList(props) {
         clickToSelect: true,
         clickToEdit: true,
         onSelect: (row, isSelect, rowIndex, e) => {
-            // console.log(row.id);
-            // console.log(isSelect);
             let newArr = selectedRow
             if (isSelect) {
                 newArr.push(row.id)
@@ -124,20 +100,18 @@ export default function HomePageList(props) {
                 newArr = newArr.filter(value => value !== row.id)
             }
             setSelectedRow(newArr)
-            console.log(selectedRow);
+            // console.log(selectedRow);
         },
         onSelectAll: (isSelect, rows, e) => {
-            // console.log(isSelect);
-            // console.log(rows);
             let newArr = []
             if (isSelect) rows.forEach(el => newArr.push(el.id))
             else newArr = []
             setSelectedRow(newArr)
-            console.log(selectedRow);
+            // console.log(selectedRow);
         }
     };
 
-    if (isLoading) {
+    if (passwords.loading) {
         setInterval(() => {
             if (dot === '.') setDot('..')
             if (dot === '..') setDot('...')
@@ -152,7 +126,7 @@ export default function HomePageList(props) {
     return (
         <>
             {
-                isLoading
+                passwords.loading
                     ? < span > Data loading{dot}</span>
                     : <ToolkitProvider
                         bootstrap4
@@ -179,13 +153,13 @@ export default function HomePageList(props) {
                                         cellEdit={cellEditFactory({
                                             mode: 'dbclick',
                                             onStartEdit: (row, column, rowIndex, columnIndex) => {
-                                                console.log('start to edit!!!', row, column.dataField)
+                                                // console.log('start to edit!!!', row, column.dataField)
                                             },
                                             beforeSaveCell: (oldValue, newValue, row, column) => {
-                                                console.log('Before Saving Cell!!', newValue, row);
+                                                // console.log('Before Saving Cell!!', newValue, row);
                                             },
                                             afterSaveCell: (oldValue, newValue, row, column) => {
-                                                console.log('After Saving Cell!!');
+                                                // console.log('After Saving Cell!!');
                                                 db.collection("passwords")
                                                     .doc(row.id)
                                                     .set({
@@ -194,7 +168,7 @@ export default function HomePageList(props) {
                                                         updatedAt: { nanoseconds: new Date().getTime(), seconds: new Date().getTime() / 1000 }
                                                     })
                                                     .then(function () {
-                                                        console.log("Document updated");
+                                                        // console.log("Document updated");
                                                         Swala('success', 'success update', 'success')
                                                     })
                                                     .catch(function (error) {

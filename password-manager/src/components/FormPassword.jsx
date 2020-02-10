@@ -20,7 +20,7 @@ export default function FormPassword(props) {
             event.stopPropagation();
             setValidated(true);
         } else {
-            console.log('masuk');
+            // console.log('masuk');
             let formSender = {
                 urlLink: props.urlLink,
                 username: props.username,
@@ -34,11 +34,12 @@ export default function FormPassword(props) {
             db.collection("passwords")
                 .add(formSender)
                 .then(function (docRef) {
-                    console.log("Document written with ID: ", docRef.id);
+                    // console.log("Document written with ID: ", docRef.id);
                     Swala('success', 'success', 'success')
                     props.setUrlLink('')
                     props.setUsername('')
                     props.setPassword('')
+                    setValidated(false)
                 })
                 .catch(function (error) {
                     console.error("Error adding document: ", error);

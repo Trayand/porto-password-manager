@@ -40,7 +40,7 @@ test('It should have not equel test@mail.com when inputed by tray@mail.com', () 
 test('testing console log event', () => {
     const consoleSpy = jest.spyOn(console, 'log');
 
-    console.log('hello');
+    // console.log('hello');
 
     expect(consoleSpy).toHaveBeenCalledWith('hello');
 })

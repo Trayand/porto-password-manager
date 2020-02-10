@@ -40,7 +40,7 @@ export default function FormForLogin(props) {
                     .createUserWithEmailAndPassword(email, password)
             }
 
-            console.log(userData, 'ini userData');
+            // console.log(userData, 'ini userData');
 
             dispatch(Login({
                 id: userData.user.uid
@@ -50,7 +50,7 @@ export default function FormForLogin(props) {
 
 
         } catch (error) {
-            console.log(error, 'ini error')
+            // console.log(error, 'ini error')
             Swala('error', error.message, 'error')
         }
     }

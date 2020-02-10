@@ -28,7 +28,7 @@ export default function LoginPage(porps) {
     const user = useSelector(state => state.user)
 
     useEffect(() => {
-        console.log(user, 'ini user dari auth.jsx');
+        // console.log(user, 'ini user dari auth.jsx');
         if (user) history.replace('/hello')
     }, [user, history])
 

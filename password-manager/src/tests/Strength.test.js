@@ -25,7 +25,5 @@ test('testing logout button', () => {
     )
 
     const text2 = getByText(/Password setidaknya harus memiliki satu karakter huruf special./i)
-    // expect(logoutFunction).toHaveBeenCalled() 
-    // *cant use this one
     expect(text2).toBeInTheDocument()
 })
